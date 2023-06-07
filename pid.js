@@ -6,9 +6,19 @@ let msg;
 let start_frame = 0;
 
 function setup() {
-    createCanvas(X * gridsize, Y * gridsize);
+    let cnv = createCanvas(X * gridsize, Y * gridsize);
+    cnv.parent("sketchHolder");
     frameRate(15);
-    msg = load_msg("0123456789:,qQwWeErRtTyYuUiIoOpPaAsSdDfFgGhHjJkKlLzZxXcCvVbBnNmM");
+    let inp = createInput('Arriving Flinders St');
+    inp.parent("sketchHolder")
+    inp.position(0, Y * gridsize);
+    inp.size(X * gridsize * 0.3);
+    inp.input(change_message);
+    msg = load_msg(inp.value())
+}
+
+function change_message() {
+    msg = load_msg(this.value())
 }
 
 function draw() {
