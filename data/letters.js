@@ -638,7 +638,16 @@ const letters = {
             [0, 1],
             [0, 1],
             [1, 0]
-        ]
+        ],
+    "spacer": [
+        [0],
+        [0],
+        [0],
+        [0],
+        [0],
+        [0],
+        [0]
+    ],
 }
 // verify integrity
 for (const [letter, repr] of Object.entries(letters)) {
