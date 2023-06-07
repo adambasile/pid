@@ -2,13 +2,15 @@ const gridsize = 10;
 const dotsize = gridsize * 0.7;
 const X = 120;
 const Y = 7;
+const frames = 30;
 let msg;
+
 let start_frame = 0;
 
 function setup() {
     let cnv = createCanvas(X * gridsize, Y * gridsize);
     cnv.parent("sketchHolder");
-    frameRate(15);
+    frameRate(frames);
     let inp = createInput('Arriving Flinders St');
     inp.parent("sketchHolder")
     inp.position(0, Y * gridsize);
@@ -25,13 +27,13 @@ function draw() {
     background(0);
     noStroke();
     let current_frame = frameCount - start_frame;
-    if (current_frame > msg[0].length) {
+    if (current_frame > (msg[0].length + X)) {
         current_frame = 0;
         start_frame = frameCount;
     }
     for (const x of Array(X).keys()) {
         for (const y of Array(Y).keys()) {
-            if (msg[y][x + current_frame]) {
+            if (msg[y][x + current_frame - X]) {
                 on();
             } else {
                 off();
