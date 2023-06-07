@@ -3,7 +3,7 @@ const gridsize = 10;
 const dotsize = gridsize * 0.7;
 const X = 120;
 const Y = 7;
-const frames = 30;
+const frames = 60;
 let msg;
 
 let start_frame = 0;
@@ -74,7 +74,7 @@ function draw() {
         for (const y of Array(Y).keys()) {
             let pixel = msg[y][x + current_frame - X];
             if (typeof pixel === 'undefined') {
-                undefined();
+                notdefined();
             } else if (pixel) {
                 on()
             } else {
@@ -89,7 +89,7 @@ function on() {
     fill(251, 100, 6);
 }
 
-function undefined() {
+function notdefined() {
     if (DEBUG) {
         fill(0, 255, 0);
     } else {
