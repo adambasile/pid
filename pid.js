@@ -3,19 +3,25 @@ const dotsize = gridsize * 0.7;
 const X = 120;
 const Y = 7;
 let msg;
+let start_frame = 0;
 
 function setup() {
     createCanvas(X * gridsize, Y * gridsize);
-    frameRate(3);
+    frameRate(15);
     msg = load_msg("0123456789:,qQwWeErRtTyYuUiIoOpPaAsSdDfFgGhHjJkKlLzZxXcCvVbBnNmM");
 }
 
 function draw() {
     background(0);
     noStroke();
+    let current_frame = frameCount - start_frame;
+    if (current_frame > msg[0].length) {
+        current_frame = 0;
+        start_frame = frameCount;
+    }
     for (const x of Array(X).keys()) {
         for (const y of Array(Y).keys()) {
-            if (msg[y][x]) {
+            if (msg[y][x + current_frame]) {
                 on();
             } else {
                 off();
