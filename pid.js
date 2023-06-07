@@ -6,17 +6,24 @@ const frames = 30;
 let msg;
 
 let start_frame = 0;
+let paused = false;
 
 function setup() {
     let cnv = createCanvas(X * gridsize, Y * gridsize);
-    cnv.parent("sketchHolder");
+    cnv.parent("pid");
     frameRate(frames);
     let inp = createInput('Arriving Flinders St');
-    inp.parent("sketchHolder")
-    inp.position(0, Y * gridsize);
+    inp.parent("textinput")
     inp.size(X * gridsize * 0.3);
     inp.input(change_message);
     msg = load_msg(inp.value())
+    button = createButton("\u23EF");
+    button.parent("pauseunpause");
+    button.mousePressed(pause)
+}
+
+function pause() {
+    paused = !paused
 }
 
 function change_message() {
@@ -26,6 +33,9 @@ function change_message() {
 function draw() {
     background(0);
     noStroke();
+    if (paused) {
+        start_frame += 1
+    }
     let current_frame = frameCount - start_frame;
     if (current_frame > (msg[0].length + X)) {
         current_frame = 0;
