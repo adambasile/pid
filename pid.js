@@ -14,7 +14,8 @@ function setup() {
     let cnv = createCanvas(X * gridsize, Y * gridsize);
     cnv.parent("pid");
     frameRate(frames);
-    let inp = createInput('Arriving Flinders St');
+    const url = new URL(window.location);
+    let inp = createInput(url.searchParams.get('txt') || 'Arriving Flinders St');
     inp.parent("textinput")
     inp.size(X * gridsize * 0.3);
     inp.input(change_message);
@@ -48,7 +49,10 @@ function switchModes() {
 }
 
 function change_message() {
-    msg = load_msg(this.value())
+    msg = load_msg(this.value());
+    const url = new URL(window.location);
+    url.searchParams.set('txt', this.value());
+    window.history.replaceState({}, "", url);
     if (!isLooping()) {
         redraw()
     }
