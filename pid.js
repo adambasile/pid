@@ -5,6 +5,7 @@ const X = 120;
 const Y = 7;
 const frames = 60;
 let msg;
+let inp;
 
 let start_frame = 0;
 let paused = false;
@@ -15,17 +16,23 @@ function setup() {
     cnv.parent("pid");
     frameRate(frames);
     const url = new URL(window.location);
-    let inp = createInput(url.searchParams.get('txt') || 'Arriving Flinders St');
+    inp = createInput(url.searchParams.get('txt') || 'Arriving Flinders St');
     inp.parent("textinput")
     inp.size(X * gridsize * 0.3);
     inp.input(change_message);
     msg = load_msg(inp.value())
-    pausebutton = createButton("\u23EF");
+    let pausebutton = createButton("\u23EF");
     pausebutton.parent("pauseunpause");
     pausebutton.mousePressed(pause)
-    modeswitch = createButton("Switch between scrolling and centred");
+    let modeswitch = createButton("Switch between scrolling and centred");
     modeswitch.parent("modeswitch");
     modeswitch.mousePressed(switchModes)
+    let savebutton = createButton("Save image");
+    savebutton.parent("savebutton");
+    savebutton.mousePressed(saveImg)
+    let gifbutton = createButton("Save gif");
+    gifbutton.parent("gifbutton");
+    gifbutton.mousePressed(renderGif)
 }
 
 function pause() {
@@ -58,10 +65,31 @@ function change_message() {
     }
 }
 
+function saveImg() {
+    saveCanvas(inp.value());
+}
+
+function renderGif() {
+    let moving = dynamic && !paused;
+    let framesToRender = moving ? (msg[0].length + X) : 1;
+    if (moving) {
+        start_frame = frameCount;
+    }
+    saveGif(inp.value(), framesToRender, {units: 'frames'});
+    let cleargifnotif = createButton("Clear gif notification", "cleargifbutton");
+    cleargifnotif.parent("cleargifnotif");
+    cleargifnotif.mousePressed(clearGifNotif)
+}
+
+function clearGifNotif() {
+    select("#progressBar").remove();
+    select(`button[value="cleargifbutton"]`).remove();
+}
+
 function draw() {
     background(0);
     noStroke();
-    if (!isLooping()) {
+    if (paused) {
         start_frame += 1
     }
     let current_frame;
